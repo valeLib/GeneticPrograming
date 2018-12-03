@@ -7,6 +7,7 @@ from src.Charts import lineChart
 from src.NQueenGeneticAlgorithm import NQueenGeneticAlgorithm
 from src.StringGeneticAlgorithm import StringGeneticAlgorithm
 
+mutationRate = 0.1
 
 def main(algorithm, word):
     algorithm.generatePopulation()
@@ -19,7 +20,6 @@ def main(algorithm, word):
         mean_fitness = np.mean(fitness)
         algorithm.selection()
         if algorithm.population[0].score == 0:
-            print(algorithm.population[0].genes)
             break
         algorithm.reproduction()
 
@@ -34,13 +34,12 @@ def experimentBits():
     for s in sizes:
         tmp = []
         for _ in range(5):
-            algorithm = BitsGeneticAlgorithm(0.1, s ** 2, s, '01', random.Random())
+            algorithm = BitsGeneticAlgorithm(mutationRate, s ** 2, s, '01', random.Random())
             word = ''
             for j in range(s):
                 word += random.choice('01')
             g = main(algorithm, word)
             tmp += [g]
-            print(s)
         tmp = np.array(tmp)
         generations += [np.mean(tmp)]
     lineChart(sizes, generations, "Tamaño de secuencia", "Número de generaciones", "Secuencia de Bits")
@@ -51,13 +50,12 @@ def experimentString():
     for s in sizes:
         tmp = []
         for _ in range(5):
-            algorithm = StringGeneticAlgorithm(0.1, s ** 2, s, 'abcdefghijklmnñopqrstuvwxyz', random.Random())
+            algorithm = StringGeneticAlgorithm(mutationRate, s ** 2, s, 'abcdefghijklmnñopqrstuvwxyz', random.Random())
             word = ''
             for j in range(s):
                 word += random.choice('abcdefghijklmnñopqrstuvwxyz')
             g = main(algorithm, word)
             tmp += [g]
-            print(s)
         tmp = np.array(tmp)
         generations += [np.mean(tmp)]
 
@@ -70,10 +68,9 @@ def experimentNQueen():
     for s in sizes:
         tmp = []
         for _ in range(5):
-            algorithm = NQueenGeneticAlgorithm(0.1, s ** 2, s, None, random.Random())
+            algorithm = NQueenGeneticAlgorithm(mutationRate, s ** 2, s, None, random.Random())
             g = main(algorithm, None)
             tmp += [g]
-            print(s)
         tmp = np.array(tmp)
         generations += [np.mean(tmp)]
 

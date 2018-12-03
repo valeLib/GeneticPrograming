@@ -4,7 +4,11 @@ from src.Charts import lineChart
 from src.NQueenGeneticAlgorithm import NQueenGeneticAlgorithm
 
 if __name__ == '__main__':
-    algorithm = NQueenGeneticAlgorithm(0.1, 1000, 12, None, random.Random())
+    mutationRate = 0.1
+    populationSize = 5000
+    numberOfGenes = 12
+
+    algorithm = NQueenGeneticAlgorithm(mutationRate, populationSize, numberOfGenes, None, random.Random())
     algorithm.generatePopulation()
 
     generations = 0
@@ -12,7 +16,6 @@ if __name__ == '__main__':
     while True:
         algorithm.evaluateFitness(None)
         algorithm.selection()
-        print(algorithm.population[0].score)
         fitnessGenerations += [algorithm.population[0].score]
         generations += 1
         if algorithm.population[0].score == 0:
