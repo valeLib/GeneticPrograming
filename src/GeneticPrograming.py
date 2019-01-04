@@ -42,7 +42,7 @@ class GeneticPrograming():
             population += [individual]
         self.population = population
 
-    def fitness(self, individual):
+    def fitness(self, individual: Individual):
         predicted = individual.AST.eval({})
         individual.score = abs(self.expected - predicted)
 
@@ -90,7 +90,7 @@ class GeneticPrograming():
                 individual = Individual(AST)
                 self.fitness(individual)
 
-                if (best_score == None or individual.score < best_score) and height < self.maxheight:
+                if (best_score == None or individual.score <= best_score) and height <= self.maxheight:
                     best_score = individual.score
                     best_individual = individual
             #Mutation
@@ -99,21 +99,3 @@ class GeneticPrograming():
 
             newPopulation += [best_individual]
             self.population = newPopulation
-
-    #Mutacion:
-    # si es terminal -> lanzo moneda y permuto por cualquier terminal
-    # si op: lanzo moneda y si hay mutacion muto la operacion recursivamente
-
-    #Maiting:
-    #convinaciones posibles entre [ops] [a, a_l, a_r] [b, b_l, b_r]
-    #y usar el con mejor score y con altura menor a altura maxima
-
-
-
-
-
-
-
-
-
-

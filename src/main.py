@@ -4,7 +4,7 @@ import operator
 
 if __name__ == '__main__':
     mutationRate = 0.1
-    populationSize = 1000
+    populationSize = 500
     maxheight = 12
 
     operators = [operator.add, operator.sub, operator.mul]
@@ -32,4 +32,4 @@ if __name__ == '__main__':
             break
         test.reproduction()
 
-    lineChart(list(range(generations)), fitnessGenerations, "Número Generaciones", "Fitness promedio", "AST de números")
+    lineChart(list(range(generations)), fitnessGenerations, "Número Generaciones", "Fitness promedio", "AST de operaciones y valores")
