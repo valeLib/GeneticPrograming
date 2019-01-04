@@ -1,83 +1,55 @@
 import random
+import operator
 
 import numpy as np
 
-from src.BitsGeneticAlgorithm import BitsGeneticAlgorithm
 from src.Charts import lineChart
-from src.NQueenGeneticAlgorithm import NQueenGeneticAlgorithm
-from src.StringGeneticAlgorithm import StringGeneticAlgorithm
+from src.GeneticPrograming import GeneticPrograming
 
 mutationRate = 0.1
 
-def main(algorithm, word):
+def main(algorithm):
     algorithm.generatePopulation()
 
     generations = 0
+    equal_score = 0
     fitnessGenerations = []
+    best_score = None
     while True:
-        algorithm.evaluateFitness(word)
+        algorithm.evaluateFitness()
         fitness = list(map(lambda i: i.score, algorithm.population))
         mean_fitness = np.mean(fitness)
         algorithm.selection()
-        if algorithm.population[0].score == 0:
+        if best_score == None or algorithm.population[0].score < best_score:
+            best_score = algorithm.population[0].score
+            if best_score == algorithm.population[0].score:
+                equal_score += 1
+
+        if best_score == 0 or equal_score > 4:
             break
-        algorithm.reproduction()
 
         fitnessGenerations += [mean_fitness]
         generations += 1
 
     return generations
 
-def experimentBits():
+def experimentAST():
     sizes = [5, 8, 10, 11, 12, 13, 14, 15]
+    operators = [operator.add, operator.sub, operator.mul]
+    terminals = [19, 7, 40, 3]
+    maxheight = 12
     generations = []
     for s in sizes:
         tmp = []
         for _ in range(5):
-            algorithm = BitsGeneticAlgorithm(mutationRate, s ** 2, s, '01', random.Random())
-            word = ''
-            for j in range(s):
-                word += random.choice('01')
-            g = main(algorithm, word)
-            tmp += [g]
-        tmp = np.array(tmp)
-        generations += [np.mean(tmp)]
-    lineChart(sizes, generations, "Tamaño de secuencia", "Número de generaciones", "Secuencia de Bits")
-
-def experimentString():
-    sizes = [5, 8, 10, 11, 12, 13, 14, 15]
-    generations = []
-    for s in sizes:
-        tmp = []
-        for _ in range(5):
-            algorithm = StringGeneticAlgorithm(mutationRate, s ** 2, s, 'abcdefghijklmnñopqrstuvwxyz', random.Random())
-            word = ''
-            for j in range(s):
-                word += random.choice('abcdefghijklmnñopqrstuvwxyz')
-            g = main(algorithm, word)
+            algorithm = GeneticPrograming(mutationRate, s ** 2, s, operators, terminals, 147)
+            g = main(algorithm)
             tmp += [g]
         tmp = np.array(tmp)
         generations += [np.mean(tmp)]
 
-    lineChart(sizes, generations, "Tamaño de string", "Número de generaciones", "Secuencia de caracteres")
-
-
-def experimentNQueen():
-    sizes = [5, 8, 10, 11, 12, 13, 14, 15]
-    generations = []
-    for s in sizes:
-        tmp = []
-        for _ in range(5):
-            algorithm = NQueenGeneticAlgorithm(mutationRate, s ** 2, s, None, random.Random())
-            g = main(algorithm, None)
-            tmp += [g]
-        tmp = np.array(tmp)
-        generations += [np.mean(tmp)]
-
-    lineChart(sizes, generations, "Tamaño del tablero", "Número de generaciones",
-              "N Reinas")
+    lineChart(sizes, generations, "Altutra máxima", "Número de generaciones",
+              "AST")
 
 if __name__ == '__main__':
-    #experimentBits()
-    #experimentString()
-    experimentNQueen()
+    experimentAST()

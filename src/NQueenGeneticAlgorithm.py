@@ -1,4 +1,4 @@
-from src.BitsGeneticAlgorithm import BitsGeneticAlgorithm
+from src.GeneticPrograming import BitsGeneticAlgorithm
 
 from src.Individual import Individual
 
